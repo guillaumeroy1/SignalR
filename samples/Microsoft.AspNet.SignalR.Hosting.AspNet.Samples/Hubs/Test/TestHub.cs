@@ -20,9 +20,10 @@ namespace Microsoft.AspNet.SignalR.Hosting.AspNet.Samples.Hubs.Test
         public override Task OnConnected()
         {
             _trace.TraceVerbose(typeof(TestHub).Name + ".OnConnected");
-            _connections.TryAdd(Context.ConnectionId, string.Empty);
-            Clients.All.clientConnected(new NodeEvent(Context.ConnectionId));
-            return Clients.Caller.groupsAll(new NodeEvent(_groups.Keys));
+            _connections.TryAdd(Context.ConnectionId, string.Empty);            
+            Clients.Caller.connectionsAll(new NodeEvent(_connections.Keys));
+            Clients.Caller.groupsAll(new NodeEvent(_groups.Keys));
+            return Clients.Others.clientConnected(new NodeEvent(Context.ConnectionId));
         }
 
         public override Task OnDisconnected()
@@ -75,9 +76,8 @@ namespace Microsoft.AspNet.SignalR.Hosting.AspNet.Samples.Hubs.Test
                 throw new ArgumentNullException("groupName");
             }
 
-            if (!_groups.ContainsKey(groupName))
+            if (_groups.TryAdd(groupName, string.Empty))
             {
-                _groups.TryAdd(groupName, string.Empty);
                 Clients.All.addedGroup(new NodeEvent(groupName));
             }
 
@@ -85,7 +85,7 @@ namespace Microsoft.AspNet.SignalR.Hosting.AspNet.Samples.Hubs.Test
             Clients.Client(connectionId).joinedGroup(new NodeEvent(groupName));
         }
 
-        public void UnjoinGroup(string groupName, string connectionId = "")
+        public void LeaveGroup(string groupName, string connectionId = "")
         {
             if (string.IsNullOrEmpty(connectionId))
             {
@@ -98,7 +98,7 @@ namespace Microsoft.AspNet.SignalR.Hosting.AspNet.Samples.Hubs.Test
             }
 
             Groups.Remove(connectionId, groupName);
-            Clients.Client(connectionId).unjoinedGroup(new NodeEvent(groupName));
+            Clients.Client(connectionId).leftGroup(new NodeEvent(groupName));
         }
     }
 }

@@ -1,52 +1,54 @@
-﻿var hubConnection = $.connection.hub;
-hubConnection.logging = true;
+﻿$(function () {
+    var hubConnection = $.connection.hub,
+        hubMessages = $("#HubMessages");    
 
-hubConnection.connectionSlow(function () {
-    $("#HubMessages").append("<li style='color:blue;'>connectionSlow:</li>");
-});
-hubConnection.disconnected(function () {
-    $("#HubMessages").append("<li>disconnected:</li>");
-});
-hubConnection.error(function (error) {
-    $("#HubMessages").append("<li style='color:red;'>error: " + error + "</li>");
-});
-//this method receives data from all hubs in json format, we dont want to see this
-//hubConnection.received(function (data) {
-//    $("#HubMessages").append("<li>received: " + data + "</li>");
-//});
-hubConnection.reconnected(function () {
-    $("#HubMessages").append("<li>reconnected:</li>");
-});
-hubConnection.reconnecting(function () {
-    $("#HubMessages").append("<li style='color:blue;'>reconnecting:</li>");
-});
-hubConnection.starting(function () {
-    $("#HubMessages").append("<li style='color:blue;'>starting:</li>");
-});
-hubConnection.stateChanged(function (change) {
-    $("#HubMessages").append("<li>stateChanged: " + PrintState(change.oldState) + " => " + PrintState(change.newState) + "</li>");
+    hubConnection.logging = true;
+    hubConnection.connectionSlow(function () {
+        hubMessages.append("<li style='color:blue;'>connectionSlow:</li>");
+    });
+    hubConnection.disconnected(function () {
+        hubMessages.append("<li>disconnected:</li>");
+    });
+    hubConnection.error(function (error) {
+        hubMessages.append("<li style='color:red;'>error: " + error + "</li>");
+    });
+    hubConnection.reconnected(function () {
+        hubMessages.append("<li>reconnected:</li>");
+    });
+    hubConnection.reconnecting(function () {
+        hubMessages.append("<li style='color:blue;'>reconnecting:</li>");
+    });
+    hubConnection.starting(function () {
+        hubMessages.append("<li style='color:blue;'>starting:</li>");
+    });
+    hubConnection.stateChanged(function (change) {
+        hubMessages.append("<li>stateChanged: " + PrintState(change.oldState) + " => " + PrintState(change.newState) + "</li>");
+    });
 });
 
-function hubConnectionStartDone() {
-    $("#HubMessages").append("<li>Connection started!</li>");
-    $("#HubMessages").append("<li>hubConnection.ajaxDataType: " + hubConnection.ajaxDataType + "</li>");
-    $("#HubMessages").append("<li>hubConnection.disconnectTimeout: " + hubConnection.disconnectTimeout + "</li>");
-    $("#HubMessages").append("<li>hubConnection.id: " + hubConnection.id + "</li>");
-    $("#HubMessages").append("<li>hubConnection.logging: " + hubConnection.logging + "</li>");
-    $("#HubMessages").append("<li>hubConnection.keepAliveData.activated: " + hubConnection.keepAliveData.activated + "</li>");
-    $("#HubMessages").append("<li>hubConnection.keepAliveData.checkInterval: " + hubConnection.keepAliveData.checkInterval + "</li>");
-    $("#HubMessages").append("<li>hubConnection.keepAliveData.lastKeepAlive: " + hubConnection.keepAliveData.lastKeepAlive + "</li>");
-    $("#HubMessages").append("<li>hubConnection.keepAliveData.timeout: " + hubConnection.keepAliveData.timeout + "</li>");
-    $("#HubMessages").append("<li>hubConnection.keepAliveData.timeoutWarning: " + hubConnection.keepAliveData.timeoutWarning + "</li>");
-    $("#HubMessages").append("<li>hubConnection.keepAliveWarnAt: " + hubConnection.keepAliveWarnAt + "</li>");
-    $("#HubMessages").append("<li>hubConnection.qs: " + hubConnection.qs + "</li>");
-    $("#HubMessages").append("<li>hubConnection.reconnectDelay: " + hubConnection.reconnectDelay + "</li>");
-    $("#HubMessages").append("<li>hubConnection.state: " + PrintState(hubConnection.state) + "</li>");
-    $("#HubMessages").append("<li>hubConnection.token: " + hubConnection.token + "</li>");
-    $("#HubMessages").append("<li>hubConnection.transport.name: " + hubConnection.transport.name + "</li>");
-    $("#HubMessages").append("<li>hubConnection.url: " + hubConnection.url + "</li>");
+function hubConnectionStartDone(testHub) {
+    var hubConnection = $.connection.hub;
+    var hubMessages = $("#HubMessages");    
 
-    $("#HubMessages").append("<li>testHub.hubName: " + testHub.hubName + "</li>");
+    hubMessages.append("<li>Connection started!</li>");
+    hubMessages.append("<li>hubConnection.ajaxDataType: " + hubConnection.ajaxDataType + "</li>");
+    hubMessages.append("<li>hubConnection.disconnectTimeout: " + hubConnection.disconnectTimeout + "</li>");
+    hubMessages.append("<li>hubConnection.id: " + hubConnection.id + "</li>");
+    hubMessages.append("<li>hubConnection.logging: " + hubConnection.logging + "</li>");
+    hubMessages.append("<li>hubConnection.keepAliveData.activated: " + hubConnection.keepAliveData.activated + "</li>");
+    hubMessages.append("<li>hubConnection.keepAliveData.checkInterval: " + hubConnection.keepAliveData.checkInterval + "</li>");
+    hubMessages.append("<li>hubConnection.keepAliveData.lastKeepAlive: " + hubConnection.keepAliveData.lastKeepAlive + "</li>");
+    hubMessages.append("<li>hubConnection.keepAliveData.timeout: " + hubConnection.keepAliveData.timeout + "</li>");
+    hubMessages.append("<li>hubConnection.keepAliveData.timeoutWarning: " + hubConnection.keepAliveData.timeoutWarning + "</li>");
+    hubMessages.append("<li>hubConnection.keepAliveWarnAt: " + hubConnection.keepAliveWarnAt + "</li>");
+    hubMessages.append("<li>hubConnection.qs: " + hubConnection.qs + "</li>");
+    hubMessages.append("<li>hubConnection.reconnectDelay: " + hubConnection.reconnectDelay + "</li>");
+    hubMessages.append("<li>hubConnection.state: " + PrintState(hubConnection.state) + "</li>");
+    hubMessages.append("<li>hubConnection.token: " + hubConnection.token + "</li>");
+    hubMessages.append("<li>hubConnection.transport.name: " + hubConnection.transport.name + "</li>");
+    hubMessages.append("<li>hubConnection.url: " + hubConnection.url + "</li>");
+
+    hubMessages.append("<li>testHub.hubName: " + testHub.hubName + "</li>");
 }
 
 function hubConnectionStartError() {
@@ -54,22 +56,11 @@ function hubConnectionStartError() {
 }
 
 function PrintState(state) {
-    switch (state) {
-        case 0:
-            return "connecting";
-        case 1:
-            return "connected";
-        case 2:
-            return "reconnecting";
-        case 4:
-            return "disconnected";
-    }
-
-    return state;
+    return ["connecting", "connected", "reconnecting", state, "disconnected"][state];
 }
 
 function incrementLabel(id) {
-    var value = parseInt($(id).text()) + 1;
+    var value = parseInt($(id).text(), 10) + 1;
     $(id).text(value);
     return value;
 }

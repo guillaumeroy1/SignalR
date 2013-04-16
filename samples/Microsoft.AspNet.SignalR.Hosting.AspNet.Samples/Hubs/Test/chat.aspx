@@ -1,11 +1,5 @@
 ﻿<%@ Page Title="ASP.NET SignalR: Connection Status" Language="C#" MasterPageFile="~/SignalR.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Microsoft.AspNet.SignalR.Samples.Hubs.ConnectDisconnect.Default" %>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="Scripts" runat="server">
-    <script src="<%: ResolveUrl("~/signalr/hubs") %>"></script>
-    <script src="common.js"></script>
-    <script src="chat.js"></script>
-</asp:Content>
-
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <ul class="breadcrumb">
         <li><a href="<%: ResolveUrl("~/") %>">SignalR Samples</a> <span class="divider">/</span></li>
@@ -47,7 +41,7 @@
         <tr>
             <td colspan="4">
                 <button id="JoinGroupButton">Join Group</button>
-                <button id="UnjoinGroupButton">Leave Group</button>
+                <button id="LeaveGroupButton">Leave Group</button>
                 <button id="SendToAllButton">Send To All</button>
                 <button id="SendToCallerButton">Send To Caller</button>
                 <button id="SendToClientButton">Send To Client</button>
@@ -62,3 +56,10 @@
     <ul id="HubMessages">
     </ul>
 </asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="Scripts" runat="server">
+    <script src="<%: ResolveUrl("~/signalr/hubs") %>"></script>
+    <script src="common.js"></script>
+    <script src="chat.js"></script>
+</asp:Content>
+

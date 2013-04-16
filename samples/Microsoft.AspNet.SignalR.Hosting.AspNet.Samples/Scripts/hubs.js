@@ -471,6 +471,13 @@
                 return proxies.testHub.invoke.apply(proxies.testHub, $.merge(["JoinGroup"], $.makeArray(arguments)));
              },
 
+            leaveGroup: function (groupName, connectionId) {
+            /// <summary>Calls the LeaveGroup method on the server-side TestHub hub.&#10;Returns a jQuery.Deferred() promise.</summary>
+            /// <param name=\"groupName\" type=\"String\">Server side type is System.String</param>
+            /// <param name=\"connectionId\" type=\"String\">Server side type is System.String</param>
+                return proxies.testHub.invoke.apply(proxies.testHub, $.merge(["LeaveGroup"], $.makeArray(arguments)));
+             },
+
             sendToAll: function (message) {
             /// <summary>Calls the SendToAll method on the server-side TestHub hub.&#10;Returns a jQuery.Deferred() promise.</summary>
             /// <param name=\"message\" type=\"String\">Server side type is System.String</param>
@@ -495,13 +502,6 @@
             /// <param name=\"groupName\" type=\"String\">Server side type is System.String</param>
             /// <param name=\"message\" type=\"String\">Server side type is System.String</param>
                 return proxies.testHub.invoke.apply(proxies.testHub, $.merge(["SendToGroup"], $.makeArray(arguments)));
-             },
-
-            unjoinGroup: function (groupName, connectionId) {
-            /// <summary>Calls the UnjoinGroup method on the server-side TestHub hub.&#10;Returns a jQuery.Deferred() promise.</summary>
-            /// <param name=\"groupName\" type=\"String\">Server side type is System.String</param>
-            /// <param name=\"connectionId\" type=\"String\">Server side type is System.String</param>
-                return proxies.testHub.invoke.apply(proxies.testHub, $.merge(["UnjoinGroup"], $.makeArray(arguments)));
              }
         };
 
