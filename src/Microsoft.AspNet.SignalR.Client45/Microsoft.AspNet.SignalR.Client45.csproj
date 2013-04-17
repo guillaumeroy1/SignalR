@@ -168,9 +168,6 @@
     <Compile Include="..\Microsoft.AspNet.SignalR.Client\Infrastructure\StreamExtensions.cs">
       <Link>Infrastructure\StreamExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\Microsoft.AspNet.SignalR.Client\Infrastructure\UrlEncoder.cs">
-      <Link>Infrastructure\UrlEncoder.cs</Link>
-    </Compile>
     <Compile Include="..\Microsoft.AspNet.SignalR.Client\NegotiationResponse.cs">
       <Link>NegotiationResponse.cs</Link>
     </Compile>

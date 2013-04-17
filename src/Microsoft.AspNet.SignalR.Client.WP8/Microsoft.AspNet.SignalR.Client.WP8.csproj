@@ -197,9 +197,6 @@
     <Compile Include="..\Microsoft.AspNet.SignalR.Client\Infrastructure\ThreadSafeInvoker.cs">
       <Link>Infrastructure\ThreadSafeInvoker.cs</Link>
     </Compile>
-    <Compile Include="..\Microsoft.AspNet.SignalR.Client\Infrastructure\UrlEncoder.cs">
-      <Link>Infrastructure\UrlEncoder.cs</Link>
-    </Compile>
     <Compile Include="..\Microsoft.AspNet.SignalR.Client\NegotiationResponse.cs">
       <Link>NegotiationResponse.cs</Link>
     </Compile>

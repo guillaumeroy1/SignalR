@@ -18,8 +18,12 @@ namespace Microsoft.AspNet.SignalR.Client.Http
             var cts = new CancellationTokenSource();
             var handler = new DefaultHttpHandler(prepareRequest, cts.Cancel);
             var client = new HttpClient(handler);
-            return client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cts.Token)
-                .Then(responseMessage => (IResponse)new HttpResponseMessageWrapper(responseMessage));
+            return client.GetAsync(new Uri(url), HttpCompletionOption.ResponseHeadersRead, cts.Token)
+                .Then(responseMessage => {
+                    client.Dispose();
+                    cts.Dispose();
+                    handler.Dispose();
+                    return (IResponse)new HttpResponseMessageWrapper(responseMessage); });
         }
 
         public Task<IResponse> Post(string url, Action<IRequest> prepareRequest, IDictionary<string, string> postData)
@@ -27,7 +31,7 @@ namespace Microsoft.AspNet.SignalR.Client.Http
             var cts = new CancellationTokenSource();
             var handler = new DefaultHttpHandler(prepareRequest, cts.Cancel);
             var client = new HttpClient(handler);
-            var req = new HttpRequestMessage(HttpMethod.Post, url);
+            var req = new HttpRequestMessage(HttpMethod.Post, new Uri(url));
 
             if (postData == null)
             {
@@ -39,7 +43,12 @@ namespace Microsoft.AspNet.SignalR.Client.Http
             }
 
             return client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, cts.Token).
-                Then(responseMessage => (IResponse)new HttpResponseMessageWrapper(responseMessage));
+                Then(responseMessage => {
+                    client.Dispose();
+                    cts.Dispose();
+                    handler.Dispose();
+                    req.Dispose();
+                    return (IResponse)new HttpResponseMessageWrapper(responseMessage); });
         }
     }
 }
